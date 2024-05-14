@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic User Profiles</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+      const { useState } = React;
+      const userData = [
+        { id: 1, name: "SRP" },
+        { id: 2, name: "SPB" },
+        { id: 3, name: "MBP" },
+        { id: 4, name: "PRP" },
+        { id: 5, name: "AP" },
+      ];
+      
+      function UserProfile({ user }) {
+        return <div style={profileStyle}>{user.name}</div>;
+      }
+      
+      function App() {
+        const [searchTerm, setSearchTerm] = useState("");
+        
+        const handleSearch = (event) => {
+          setSearchTerm(event.target.value);
+        };
+
+        const filteredUsers = userData.filter((user) =>
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        return (
+          <div style={containerStyle}>
+            <input
+              type="text"
+              style={searchInputStyle}
+              placeholder="Search by name..."
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            {filteredUsers.map((user) => (
+              <UserProfile key={user.id} user={user} />
+            ))}
+          </div>
+        );
+      }
+
+      const containerStyle = {
+        width: '400px',
+      };
+
+      const searchInputStyle = {
+        width: '100%',
+        padding: '8px',
+        fontSize: '16px',
+        marginBottom: '16px',
+        boxSizing: 'border-box',
+      };
+
+      const profileStyle = {
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        padding: '16px',
+        marginBottom: '16px',
+      };
+
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
